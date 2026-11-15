@@ -1,5 +1,11 @@
 [workspace]
-name = "mhm-workshop"
+name = "mHM Workshop 2026"
+description = "QGIS with the mHM plugin, hydrological modelling tools, and NetCDF visualization for the mHM Workshop 2026."
+authors = ["mHM Developers"]
+homepage = "https://mhm-ufz.org"
+repository = "https://github.com/mhm-ufz/Workshop-2026"
+documentation = "https://github.com/mhm-ufz/Workshop-2026#readme"
+readme = "README.md"
 channels = ["conda-forge"]
 platforms = [
   "linux-64",

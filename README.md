@@ -240,8 +240,8 @@ mhm-workshop/
 ```
 
 `qgis-profiles/` and `.pixi/` are created in the installation folder. With a
-separate installation folder, it also gets copies of `pixi.toml`, `pixi.lock`,
-`tools/` and `test_domain/`. Update mode keeps an existing `test_domain/`.
+separate installation folder, it also gets copies of `pixi.toml`, `README.md`,
+`pixi.lock`, `tools/` and `test_domain/`. Update mode keeps an existing `test_domain/`.
 The test run writes its results to `test_domain/output_b1/`.
 
 ---

@@ -22,7 +22,7 @@
 .PARAMETER InstallDir
     Folder to install into (default: current directory, "."). Its path must not contain "Nextcloud",
     and it must be new, empty or a previous installation. It may be this
-    folder. Otherwise pixi.toml, the lock file, tools\ and test_domain\ are
+    folder. Otherwise pixi.toml, README.md, the lock file, tools\ and test_domain\ are
     copied there and this folder is left unchanged.
 
 .PARAMETER Launcher
@@ -89,7 +89,7 @@ if (Test-Path -LiteralPath $InstallDir) {
     # never write into a folder with other content, unless it is a previous installation
     $Manifest = Join-Path $InstallDir 'pixi.toml'
     $Previous = (Test-Path -LiteralPath $Manifest) -and
-                (Select-String -LiteralPath $Manifest -SimpleMatch 'name = "mhm-workshop"' -Quiet)
+                (Select-String -LiteralPath $Manifest -Pattern '^name = "(mHM Workshop 2026|mhm-workshop)"' -Quiet)
     if (-not $Previous -and @(Get-ChildItem -LiteralPath $InstallDir -Force).Count -gt 0) {
         Fail "$InstallDir is not empty and holds no previous workshop installation. Choose a new or empty folder."
     }
@@ -162,6 +162,7 @@ try {
     if ($InstallDir -ne $ProjectDir) {
         Info "Copying the environment files to $InstallDir ..."
         Copy-Item -LiteralPath pixi.toml -Destination $InstallDir -Force
+        Copy-Item -LiteralPath README.md -Destination $InstallDir -Force
         foreach ($Folder in @('tools', 'test_domain')) {
             if ($Update -and $Folder -eq 'test_domain' -and
                 (Test-Path -LiteralPath (Join-Path $InstallDir 'test_domain') -PathType Container)) {

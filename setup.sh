@@ -7,9 +7,9 @@
 #   --install-dir DIR  folder to install into (default: current directory, ".").
 #                      Its path must not contain
 #                      "Nextcloud", and it must be new, empty or a previous install.
-#                      It may be this folder. Otherwise pixi.toml, the lock file,
-#                      tools/ and test_domain/ are copied there and this folder
-#                      is left unchanged.
+#                      It may be this folder. Otherwise pixi.toml, README.md,
+#                      the lock file, tools/ and test_domain/ are copied there
+#                      and this folder is left unchanged.
 #   --update           refresh an existing installation from this checkout;
 #                      keep its test_domain/ and QGIS profile settings
 #   --launcher         additionally create a launcher
@@ -74,12 +74,12 @@ not_in_nextcloud() {
 }
 not_in_nextcloud "$INSTALL_DIR"
 [ ! -e "$INSTALL_DIR" ] || [ -d "$INSTALL_DIR" ] || fail "$INSTALL_DIR is a file, not a folder"
-if $UPDATE && ! grep -qs '^name = "mhm-workshop"' "$INSTALL_DIR/pixi.toml"; then
+if $UPDATE && ! grep -Eqs '^name = "(mHM Workshop 2026|mhm-workshop)"' "$INSTALL_DIR/pixi.toml"; then
   fail "No workshop installation found in $INSTALL_DIR. Run setup without --update first, or choose the existing installation with --install-dir."
 fi
 # never write into a folder with other content, unless it is a previous installation
 if [ -d "$INSTALL_DIR" ] && [ -n "$(ls -A "$INSTALL_DIR")" ] \
-   && ! grep -qs '^name = "mhm-workshop"' "$INSTALL_DIR/pixi.toml"; then
+   && ! grep -Eqs '^name = "(mHM Workshop 2026|mhm-workshop)"' "$INSTALL_DIR/pixi.toml"; then
   fail "$INSTALL_DIR is not empty and holds no previous workshop installation. Choose a new or empty folder."
 fi
 
@@ -142,7 +142,7 @@ INSTALL_REAL="$(cd "$INSTALL_DIR" && pwd -P)"
 not_in_nextcloud "$INSTALL_REAL"     # also when reached through a symbolic link
 if [ "$INSTALL_REAL" != "$(pwd -P)" ]; then
   info "Copying the environment files to $INSTALL_DIR ..."
-  cp pixi.toml "$INSTALL_DIR/"
+  cp pixi.toml README.md "$INSTALL_DIR/"
   for folder in tools test_domain; do
     if $UPDATE && [ "$folder" = test_domain ] && [ -d "$INSTALL_DIR/test_domain" ]; then
       continue
