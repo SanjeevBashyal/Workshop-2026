@@ -9,6 +9,7 @@ platforms = [
 ]
 
 [dependencies]
+shell = "*"
 # Stay on Python 3.13 for wheel compatibility (e.g. crick).
 python = "3.13.*"
 qgis = "4.*"
@@ -43,14 +44,27 @@ ncv = "*"
 [activation.env]
 PYTHONNOUSERSITE = "1"   # ignore ~/.local packages
 
-[tasks]
-qgis = "qgis --profiles-path \"$PIXI_PROJECT_ROOT/qgis-profiles\" --profile workshop"   # quoted for paths with spaces
+[tasks.qgis]
+description = "Open QGIS with the workshop profile and mHM plugin."
+cmd = 'qgis --profiles-path "$PIXI_PROJECT_ROOT/qgis-profiles" --profile workshop'
+
+[tasks.shell]
+description = "Open Prefix's shell with the workshop environment active."
+cmd = "shell"
 
 [tasks.test-mhm]
-cmd = 'python -m mhm "{{ cwd }}"'
-args = [{ arg = "cwd", default = "test_domain" }]
+description = "Run mHM with the selected namelists and domain (defaults to the bundled test domain)."
+cmd = 'python -m mhm -n "{{ nml }}" -p "{{ parameter }}" -o "{{ mhm_output }}" -r "{{ mrm_output }}" "{{ cwd }}"'
+args = [
+  { arg = "nml", default = "mhm.nml" },                   # mHM configuration namelist
+  { arg = "parameter", default = "mhm_parameter.nml" },   # mHM parameter namelist
+  { arg = "mhm_output", default = "mhm_outputs.nml" },    # mHM output namelist
+  { arg = "mrm_output", default = "mrm_outputs.nml" },    # mRM output namelist
+  { arg = "cwd", default = "test_domain" },              # domain working directory
+]
 
 [tasks.view]
+description = "View a NetCDF file in ncv (defaults to the test domain's mRM output)."
 cmd = 'python -m ncv "{{ file }}"'
 args = [{ arg = "file", default = "test_domain/output_b1/mRM_Fluxes_States.nc" }]
 
@@ -60,6 +74,7 @@ args = [{ arg = "file", default = "test_domain/output_b1/mRM_Fluxes_States.nc" }
 qgis = { version = "==4.2.3", build = "py313h07e87ee_1" }
 libprotobuf = { version = "==7.35.1", build = "h1a71995_3" }
 
-[target.win-64.tasks]
+[target.win-64.tasks.qgis]
+description = "Open QGIS with the workshop profile and mHM plugin."
 # keeps other Python installations on PATH away from QGIS, see tools/start_qgis.py
-qgis = "python -I \"$PIXI_PROJECT_ROOT/tools/start_qgis.py\" --profiles-path \"$PIXI_PROJECT_ROOT/qgis-profiles\" --profile workshop"
+cmd = 'python -I "$PIXI_PROJECT_ROOT/tools/start_qgis.py" --profiles-path "$PIXI_PROJECT_ROOT/qgis-profiles" --profile workshop'

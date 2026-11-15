@@ -105,7 +105,8 @@ system's application menu or run `pixi-gui` in a terminal. Open the
 | Task | Purpose |
 |------|---------|
 | `qgis` | Open QGIS with the workshop profile and mHM plugin. |
-| `test-mhm` | Run the bundled test domain, or pass another domain directory. |
+| `shell` | Start Prefix's shell in the workshop environment. |
+| `test-mhm` | Run the bundled test domain, or choose another domain and namelist files. |
 | `view` | Open the test domain's mRM output in ncv, or pass another NetCDF file. |
 
 Run `test-mhm` before `view` to generate the default output file.
@@ -128,6 +129,12 @@ already enabled. Under *Help → About* you can check that QGIS runs from the
 > or the *QGIS mHM Workshop* launcher. A separate system QGIS installation
 > does not use the workshop profile and environment.
 
+### Open a workshop shell
+
+Run `pixi run shell` in a terminal to open [Prefix's shell](https://github.com/prefix-dev/shell)
+with the workshop environment active. It provides the same shell commands on
+Linux, macOS and Windows. Run `exit` to leave it.
+
 ### Inspect NetCDF files with ncv
 
 In the installation folder, run `pixi run view` to open the test domain's
@@ -144,8 +151,27 @@ binary libraries are managed together with QGIS.
 
 In the installation folder, run `pixi run test-mhm` to simulate the bundled
 test domain. Simulation outputs are written to `test_domain/output_b1/`.
-To run a different domain, use `pixi run test-mhm path/to/domain`
-(quote paths containing spaces). The task passes this directory to `python -m mhm`.
+Optional Pixi task arguments select the namelist files and working directory
+passed to `python -m mhm`, in this order:
+
+| Argument | mHM option | Default |
+|----------|------------|---------|
+| `nml` | `-n` / `--nml` | `mhm.nml` |
+| `parameter` | `-p` / `--parameter` | `mhm_parameter.nml` |
+| `mhm_output` | `-o` / `--mhm_output` | `mhm_outputs.nml` |
+| `mrm_output` | `-r` / `--mrm_output` | `mrm_outputs.nml` |
+| `cwd` | working directory | `test_domain` |
+
+For example, `pixi run test-mhm custom.nml` uses a different configuration
+namelist in the test domain. To run another domain with the default filenames:
+
+```bash
+pixi run test-mhm mhm.nml mhm_parameter.nml mhm_outputs.nml mrm_outputs.nml path/to/domain
+```
+
+The working directory is the last argument. Quote paths containing spaces;
+namelist paths are relative to the selected working directory.
+
 The bundled test domain's usage terms and attribution are in
 [test_domain/NOTICE.md](test_domain/NOTICE.md).
 
