@@ -44,7 +44,7 @@ guidata = ">=3.17.1,<4"
 # only what isn't on conda-forge
 mhm = "*"
 mhm_tools = { path = "tools/mhm_tools-0.3.2-py3-none-any.whl" }   # 0.3.2 is not on PyPI yet
-nml-tools = "*"
+nml-tools = { path = "tools/nml_tools-0.6.1-py3-none-any.whl" }   # 0.6.1 is not on PyPI yet
 ncv = "*"
 
 [activation.env]
