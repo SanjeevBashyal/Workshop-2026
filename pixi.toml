@@ -1,6 +1,6 @@
 [workspace]
 name = "mHM Workshop 2026"
-description = "QGIS with the mHM plugin, hydrological modelling tools, and NetCDF visualization for the mHM Workshop 2026."
+description = "Welcome to the mHM Workshop 2026! Let's explore hydrological modelling together."
 authors = ["mHM Developers"]
 homepage = "https://mhm-ufz.org"
 repository = "https://github.com/mhm-ufz/Workshop-2026"
@@ -33,6 +33,8 @@ crick = "*"
 h5py = "*"
 h5netcdf = "*"
 netcdf4 = "*"
+# Provides the ncdump command-line tool.
+libnetcdf = "*"
 cartopy = "*"
 dask = "*"
 seaborn = "*"
@@ -58,7 +60,7 @@ cmd = 'qgis --profiles-path "$PIXI_PROJECT_ROOT/qgis-profiles" --profile worksho
 description = "Open Prefix's shell with the workshop environment active."
 cmd = "shell"
 
-[tasks.test-mhm]
+[tasks.mhm]
 description = "Run mHM with the selected namelists and domain (defaults to the bundled test domain)."
 cmd = 'python -m mhm -n "{{ nml }}" -p "{{ parameter }}" -o "{{ mhm_output }}" -r "{{ mrm_output }}" "{{ cwd }}"'
 args = [
@@ -66,7 +68,15 @@ args = [
   { arg = "parameter", default = "mhm_parameter.nml" },   # mHM parameter namelist
   { arg = "mhm_output", default = "mhm_outputs.nml" },    # mHM output namelist
   { arg = "mrm_output", default = "mrm_outputs.nml" },    # mRM output namelist
-  { arg = "cwd", default = "test_domain" },              # domain working directory
+  { arg = "cwd", default = "test_domain" },               # domain working directory
+]
+
+[tasks.ncdump]
+description = "Inspect a NetCDF file (defaults to the test domain's mRM output header)."
+cmd = 'ncdump {{ args }} "{{ file }}"'
+args = [
+  { arg = "args", default = "-h" },
+  { arg = "file", default = "test_domain/output_b1/mRM_Fluxes_States.nc" },
 ]
 
 [tasks.view]

@@ -52,12 +52,13 @@ def check_installation():
         raise RuntimeError("The test-domain notice was not copied")
 
     # Test the public task and its default domain, not just an import of mhm.
-    subprocess.run(["pixi", "run", "test-mhm"], check=True, timeout=300)
+    subprocess.run(["pixi", "run", "mhm"], check=True, timeout=300)
     with xr.open_dataset(OUTPUT) as dataset:
         if not dataset.data_vars or not all(size > 0 for size in dataset.sizes.values()):
             raise RuntimeError("The test run produced an empty mRM output")
         dataset.load()  # Also exercise the installed NetCDF libraries.
     print(f"mHM produced readable output: {OUTPUT}", flush=True)
+    subprocess.run(["pixi", "run", "ncdump"], check=True, timeout=30)
 
     # Run the actual qgis task (including the Windows launcher and DLL loading).
     # The in-app script reports success only after checking the enabled plugin.

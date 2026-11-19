@@ -1,337 +1,129 @@
-# mHM QGIS Workshop
+# mHM Workshop 2026
 
-This repository sets up the software for the workshop:
+Welcome! This folder contains the software for our hands-on hydrological
+modelling workshop: mHM, QGIS with the mHM plugin, and tools for exploring results.
 
-- a self-contained software environment with QGIS, mHM and all Python packages,
-- the mHM QGIS plugin, set up in a separate QGIS profile,
-- a small test domain for a first mHM run and viewing its output.
+## Quickstart
 
-The workshop exercise data and projects will be distributed separately.
-The environment and QGIS profile are installed **inside the installation folder**.
-Your system Python and any QGIS you already have installed are not changed.
+Please set things up **before the workshop**. The installation downloads the
+software and may take a while. If you get stuck, let us know—we are happy to help.
 
-> **Please complete the installation before the workshop** and let us know if
-> anything goes wrong. Installation downloads several GB and can take a while
-> on conference Wi-Fi.
+### 1. Download the workshop folder
 
----
+[Download the ZIP](https://github.com/mhm-ufz/Workshop-2026/archive/refs/heads/main.zip),
+extract it, and rename the extracted folder to `mhm-workshop`.
+On Windows, right-click the ZIP in **File Explorer** and choose **Extract All…**.
 
-## Requirements
-
-- **Ubuntu** (22.04 or newer, other Linux distributions usually work as well), **macOS** (Apple Silicon or Intel) or **Windows** 10/11 (64-bit, Intel or AMD)
-- About **10 GB of free disk space**
-- An internet connection during installation
-- A terminal (on Windows: PowerShell)
-
-Windows on ARM (e.g. laptops with a Snapdragon processor) is not supported. If
-you only have such a machine, please contact us in advance.
-
----
-
-## Installation
-
-### 1. Put the folder in a suitable place
-
-Unpack or clone `mhm-workshop` to a location that
-
-- has **no spaces** in its path (e.g. `~/mhm-workshop` or `C:\mhm-workshop`, not `~/My Files/mhm-workshop`),
-- is **not synchronised** by a cloud client (Nextcloud, Dropbox, iCloud, OneDrive, …),
-- is on a **local disk**, not a network drive.
-
-On Windows, `C:\mhm-workshop` is a good choice: the path is short, and Desktop
-and Documents are often synchronised by OneDrive.
-
-### 2. Run the setup script
-
-**Ubuntu and macOS:** open a terminal in the folder and run:
+If you prefer Git, clone it instead:
 
 ```bash
-cd ~/mhm-workshop
-bash setup.sh
+git clone https://github.com/mhm-ufz/Workshop-2026.git mhm-workshop
 ```
 
-**Windows:** open *Windows PowerShell* from the Start menu and run:
+We **strongly recommend using the paths below**: put `mhm-workshop` at the
+root of your Windows drive (`C:\mhm-workshop`) or directly in your home folder
+on Linux/macOS (`~/mhm-workshop`).
+
+### 2. Run setup once
+
+Copy and paste each command below, pressing **Enter** after each line.
+The `cd` command switches to the workshop folder at the recommended location.
+
+**Windows:** open the **Start menu**, search for **Windows PowerShell**, and
+select **Open**. Microsoft has a short guide to
+[starting Windows PowerShell](https://learn.microsoft.com/en-us/powershell/scripting/windows-powershell/starting-windows-powershell).
 
 ```powershell
 cd C:\mhm-workshop
 powershell -ExecutionPolicy Bypass -File setup.ps1
 ```
 
-`-ExecutionPolicy Bypass` allows this one script to run. It does not change
-your system settings.
+**Linux and macOS:** open **Terminal** and run:
 
-The installation folder defaults to `.` (the current working directory).
-It is where the environment is installed and where you start QGIS from.
-Installing into the workshop folder itself, as above, is simplest. You can
-also choose a separate new folder with `--install-dir ~/mhm-workshop-env`
-(Windows: `-InstallDir C:\mhm-workshop-env`): the script then copies the few files it
-needs there and leaves the workshop folder unchanged. The installation folder
-must be new, empty or a previous installation, and its path must not contain
-"Nextcloud".
-
-The script
-
-1. installs [pixi](https://pixi.sh) (a package manager) into `~/.pixi` (Windows: `%USERPROFILE%\.pixi`), if it is not installed yet,
-2. tries to install [Pixi GUI](https://github.com/prefix-dev/pixi-gui) globally through pixi,
-3. installs the workshop environment into `.pixi/` inside the installation folder,
-4. installs the mHM plugin into the workshop QGIS profile there and enables it,
-5. checks that the QGIS executable is available in the environment.
-
-If Pixi GUI cannot be installed, setup warns and continues. This can happen on
-older Linux systems with an incompatible glibc. You can still use all workshop
-tasks from the terminal.
-
-At the end you should see `Setup complete`.
-
-Optional: create a launcher so you can start QGIS without a terminal:
-
-```
-# Ubuntu, macOS
-bash setup.sh --launcher
-# Windows
-powershell -ExecutionPolicy Bypass -File setup.ps1 -Launcher
+```bash
+cd ~/mhm-workshop
+bash setup.sh
 ```
 
-- **Ubuntu:** an entry *QGIS mHM Workshop* appears in the application menu.
-- **macOS:** an app *QGIS mHM Workshop* appears in `~/Applications`.
-- **Windows:** an entry *QGIS mHM Workshop* appears in the Start menu. Next to QGIS it opens a minimised console window; leave it open, it closes together with QGIS.
+Wait until you see **Setup complete**. Setup installs the workshop software and
+tries to install Pixi GUI, which lets you run the tools with a click.
 
 ### 3. Open Pixi GUI
 
-Start [Pixi GUI](https://github.com/prefix-dev/pixi-gui) from your operating
-system's application menu or run `pixi-gui` in a terminal. Open the
-**installation folder** as a workspace. Its tasks are:
+**Windows:** open the **Start menu**, search for **Pixi GUI**, and launch it.
+**Linux/macOS:** open **Pixi GUI** from your applications menu.
+You can also type `pixi-gui` in a new PowerShell or Terminal window.
+In Pixi GUI, open the workshop folder (`C:\mhm-workshop` on Windows or
+`~/mhm-workshop` on Linux/macOS)—the one containing `pixi.toml`.
 
-| Task | Purpose |
-|------|---------|
-| `qgis` | Open QGIS with the workshop profile and mHM plugin. |
-| `shell` | Start Prefix's shell in the workshop environment. |
-| `test-mhm` | Run the bundled test domain, or choose another domain and namelist files. |
-| `view` | Open the test domain's mRM output in ncv, or pass another NetCDF file. |
+![Pixi GUI showing the mHM Workshop 2026 workspace and its five tasks](tools/GUI.png)
 
-Run `test-mhm` before `view` to generate the default output file.
-If Pixi GUI is unavailable, use the terminal commands below.
+Click the **play button next to `mhm`** for a first test run. When it finishes,
+run **`view`** to explore the results. The default settings are ready to use.
+You can return to Pixi GUI throughout the workshop to launch the tools.
 
-### 4. Start QGIS from the terminal
+## Your workshop tools
 
-In the installation folder, run:
+| Task | What it does |
+|------|--------------|
+| `mhm` | Run mHM; starts with the included test domain. |
+| `ncdump` | Print a NetCDF file's header to inspect its variables and dimensions. |
+| `qgis` | Open QGIS with the workshop's mHM plugin enabled. |
+| `shell` | Open a terminal with the workshop tools available. |
+| `view` | Open a NetCDF file in the graphical viewer. |
 
-```
-cd ~/mhm-workshop        # Windows: cd C:\mhm-workshop
+The pencil button lets you change a task's inputs. Run `mhm` first to create
+the default output used by `view` and `ncdump`. Results are saved in
+`test_domain/output_b1/`. The exercise data for the workshop will be provided
+separately.
+
+Please start QGIS through this workspace's **`qgis` task**, so it uses the
+workshop environment and plugin.
+
+## Editing files
+
+We recommend installing [Visual Studio Code](https://code.visualstudio.com/download)
+for editing model configuration files and scripts. It integrates with Pixi GUI:
+use **Open in Editor…** and select VS Code to open the workshop folder.
+
+## If something doesn't work
+
+Send us the error message and tell us which step you were running. If setup
+warns that Pixi GUI could not be installed, the workshop tools can still work.
+Open a new **Windows PowerShell** or **Terminal** window and switch to the
+workshop folder with `cd C:\mhm-workshop` (Linux/macOS: `cd ~/mhm-workshop`).
+Then run a task by name, for example:
+
+```text
+pixi run mhm
+pixi run view
 pixi run qgis
 ```
 
-or use the launcher. QGIS opens with the workshop profile and the mHM plugin
-already enabled. Under *Help → About* you can check that QGIS runs from the
-`.pixi/` folder in the installation folder.
+## Updating
 
-> **Important:** use the workspace's `qgis` task in Pixi GUI, `pixi run qgis`,
-> or the *QGIS mHM Workshop* launcher. A separate system QGIS installation
-> does not use the workshop profile and environment.
+If we ask you to update, close the workshop tools. For a Git clone, run
+`git pull --ff-only` in the workshop folder, then rerun the setup command above
+with `--update` (Windows: `-Update`).
 
-### Open a workshop shell
-
-Run `pixi run shell` in a terminal to open [Prefix's shell](https://github.com/prefix-dev/shell)
-with the workshop environment active. It provides the same shell commands on
-Linux, macOS and Windows. Run `exit` to leave it.
-
-### Inspect NetCDF files with ncv
-
-In the installation folder, run `pixi run view` to open the test domain's
-mRM output (`test_domain/output_b1/mRM_Fluxes_States.nc`) after running
-`pixi run test-mhm`. To open another file, run `pixi run view path/to/file.nc`
-(quote paths containing spaces). The task calls `python -m ncv` with that file.
-
-Run `pixi run ncv` to open the viewer without a file.
-QGIS 4 and ncv share the conda-forge PyQt6
-installation. PyQt6 and netCDF4 are explicit conda dependencies so these
-binary libraries are managed together with QGIS.
-
-### Test mHM
-
-In the installation folder, run `pixi run test-mhm` to simulate the bundled
-test domain. Simulation outputs are written to `test_domain/output_b1/`.
-Optional Pixi task arguments select the namelist files and working directory
-passed to `python -m mhm`, in this order:
-
-| Argument | mHM option | Default |
-|----------|------------|---------|
-| `nml` | `-n` / `--nml` | `mhm.nml` |
-| `parameter` | `-p` / `--parameter` | `mhm_parameter.nml` |
-| `mhm_output` | `-o` / `--mhm_output` | `mhm_outputs.nml` |
-| `mrm_output` | `-r` / `--mrm_output` | `mrm_outputs.nml` |
-| `cwd` | working directory | `test_domain` |
-
-For example, `pixi run test-mhm custom.nml` uses a different configuration
-namelist in the test domain. To run another domain with the default filenames:
-
-```bash
-pixi run test-mhm mhm.nml mhm_parameter.nml mhm_outputs.nml mrm_outputs.nml path/to/domain
-```
-
-The working directory is the last argument. Quote paths containing spaces;
-namelist paths are relative to the selected working directory.
-
-The bundled test domain's usage terms and attribution are in
-[test_domain/NOTICE.md](test_domain/NOTICE.md).
-
----
-
-## Updating an installation
-
-Close QGIS and any running workshop tasks. Get the updated repository first:
-for a Git clone, run `git pull --ff-only` in the repository folder; otherwise
-download and extract the new archive.
-
-From the updated repository folder, run the setup script in update mode:
-
-**Ubuntu and macOS:**
-
-```bash
-bash setup.sh --update
-```
+Otherwise, download the new ZIP.
+Extract it into a separate folder. From that new folder, run the setup script
+with update mode and the path to your existing workshop folder:
 
 **Windows:**
 
 ```powershell
-powershell -ExecutionPolicy Bypass -File setup.ps1 -Update
+powershell -ExecutionPolicy Bypass -File setup.ps1 -Update -InstallDir C:\mhm-workshop
 ```
 
-These commands use the current directory as the installation folder. If you
-installed elsewhere, or extracted the updated archive into a new folder,
-point the updated script at the existing installation:
+**Linux and macOS** (adjust the path if needed):
 
 ```bash
-bash setup.sh --update --install-dir ~/mhm-workshop-env
+bash setup.sh --update --install-dir ~/mhm-workshop
 ```
 
-```powershell
-powershell -ExecutionPolicy Bypass -File setup.ps1 -Update -InstallDir C:\mhm-workshop-env
-```
+This updates the software and plugin while keeping your test-domain files,
+results and QGIS settings.
 
-Update mode refreshes the environment files, synchronizes installed packages
-with the current manifest and refreshes the lock file if needed. It reinstalls
-the bundled mHM plugin while keeping the QGIS profile settings and existing
-`test_domain/` files, including local namelist changes and simulation outputs.
-Workshop exercise data and projects distributed separately are left in place.
-Pixi GUI installation is retried; a failure still only produces a warning.
-
-When you see `Update complete`, reopen the workspace in Pixi GUI or run
-`pixi run qgis` in the installation folder.
-
----
-
-## Folder structure
-
-```
-mhm-workshop/
-├── README.md          this file
-├── setup.sh           installation script (Ubuntu, macOS)
-├── setup.ps1          installation script (Windows)
-├── pixi.toml          environment definition
-├── pixi.lock          exact package versions
-├── tools/             bundled packages and the QGIS start helper for Windows
-│   ├── mhm_qgis.zip   the mHM QGIS plugin, installed by the setup script
-│   ├── mhm_tools-0.3.2-py3-none-any.whl  mhm-tools (not yet on PyPI)
-│   └── start_qgis.py  QGIS start helper for Windows
-├── test_domain/       bundled domain for a first test run, including NOTICE.md
-├── qgis-profiles/     QGIS profile with the mHM plugin (created by the setup script)
-└── .pixi/             the installed environment (created by the setup script)
-```
-
-`qgis-profiles/` and `.pixi/` are created in the installation folder. With a
-separate installation folder, it also gets copies of `pixi.toml`, `README.md`,
-`pixi.lock`, `tools/` and `test_domain/`. Update mode keeps an existing `test_domain/`.
-The test run writes its results to `test_domain/output_b1/`.
-
----
-
-## Troubleshooting
-
-`pixi: command not found` **after installation**
-(Windows: *The term 'pixi' is not recognized*)
-Open a new terminal window. Or run `export PATH="$HOME/.pixi/bin:$PATH"`, on
-Windows `$env:PATH = "$env:USERPROFILE\.pixi\bin;$env:PATH"`.
-
-**Windows: "running scripts is disabled on this system"**
-Start the script with `powershell -ExecutionPolicy Bypass -File setup.ps1 -InstallDir C:\mhm-workshop`,
-as shown above, not with `.\setup.ps1`.
-
-**Windows: "path too long" errors, or a warning about long path support**
-Move the folder to a short path such as `C:\mhm-workshop` and run the setup
-again. If that does not help, enable long paths once in a PowerShell window
-opened with *Run as administrator*, restart Windows and run the setup again:
-
-```powershell
-New-ItemProperty -Path 'HKLM:\SYSTEM\CurrentControlSet\Control\FileSystem' -Name LongPathsEnabled -Value 1 -PropertyType DWORD -Force
-```
-
-**The plugin asks to install Python packages with** `pip --user`
-Click **Cancel**. All packages are already part of the environment, so this
-usually means QGIS was not started with `pixi run qgis`. If it happens
-anyway, please contact us.
-
-**Error** `_ARRAY_API not found` **or** `numpy.core.multiarray failed to import`
-You are most likely running your system QGIS instead of the workshop QGIS.
-Close all QGIS windows and start it again with `pixi run qgis`.
-
-**Messages about** `libpdal_plugin_reader_tiledb.so` **in the terminal**
-Harmless. They concern a point cloud format that is not used in the workshop.
-
-**Ubuntu: "Wayland session detected" warning in QGIS**
-The environment already starts QGIS in compatibility mode (XWayland). If the
-warning still appears, please let us know.
-
-**macOS: the launcher cannot be opened ("unidentified developer")**
-Right-click the app in `~/Applications`, choose *Open* and confirm once.
-
-**macOS on Apple Silicon: setup reports Rosetta**
-Your terminal runs in Intel emulation. The script handles this, but if
-problems occur, open the terminal without *Open using Rosetta* (Finder → Get Info).
-
----
-
-## Uninstalling
-
-Delete the `mhm-workshop` folder, and the installation folder if you chose a
-separate one. To also remove pixi itself:
-
-```
-rm -rf ~/.pixi                                         # Ubuntu, macOS
-Remove-Item -Recurse -Force "$env:USERPROFILE\.pixi"   # Windows PowerShell
-```
-
-On Windows, also remove `%USERPROFILE%\.pixi\bin` from your `PATH`: search the
-Start menu for *Edit environment variables for your account*.
-
-pixi keeps the downloaded packages in a cache of several GB, which you can
-delete as well: `~/.cache/rattler` (Ubuntu), `~/Library/Caches/rattler`
-(macOS) or `%LOCALAPPDATA%\rattler` (Windows).
-
-If you used the launcher, also delete
-`~/.local/share/applications/mhm-workshop-qgis.desktop` (Ubuntu),
-`~/Applications/QGIS mHM Workshop.app` (macOS) or
-`%APPDATA%\Microsoft\Windows\Start Menu\Programs\QGIS mHM Workshop.lnk` (Windows).
-
----
-
-## Installation checks
-
-GitHub Actions checks fresh installations and updates on Linux, Windows, and
-macOS (Apple Silicon and Intel) for pushes and pull requests. You can also
-start the **Installation** workflow manually from the repository's Actions tab.
-
-The checks run the setup scripts, simulate the bundled mHM test domain, read
-its NetCDF output, and launch QGIS with the enabled mHM plugin. They also check
-that ncv's GUI code imports alongside QGIS and that updates preserve local
-test-domain files and QGIS settings. Linux uses an Xvfb virtual display;
-Windows and macOS use their native Qt backends. Pixi GUI installation remains
-optional, as it is for participants.
-
----
-
-## Contact
-
-<!-- name, e-mail, workshop date and place -->
-
-mHM: <https://mhm-ufz.org>
+Learn more about [mHM](https://mhm-ufz.org).
+The included test domain's usage terms are in [test_domain/NOTICE.md](test_domain/NOTICE.md).
