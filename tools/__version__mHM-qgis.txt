@@ -1,1 +1,1 @@
-mHM-qgis-0.1.dev3
+mHM-qgis-0.1.dev7
