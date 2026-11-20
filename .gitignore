@@ -5,3 +5,6 @@
 
 # Local QGIS profiles created by workshop setup.
 /qgis-profiles/
+
+# Locally resolved Pixi environment.
+/pixi.lock
