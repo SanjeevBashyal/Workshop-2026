@@ -2,3 +2,6 @@
 /test_domain/ConfigFile.log
 /test_domain/output_b1/*
 !/test_domain/output_b1/.gitkeep
+
+# Local QGIS profiles created by workshop setup.
+/qgis-profiles/

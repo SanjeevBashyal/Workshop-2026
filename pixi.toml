@@ -18,7 +18,8 @@ platforms = [
 shell = "*"
 # Stay on Python 3.13 for wheel compatibility (e.g. crick).
 python = "3.13.*"
-qgis = "4.*"
+# Stay on the QGIS 4.2 series used for workshop testing.
+qgis = "4.2.*"
 # Share QGIS's conda-forge Qt stack with ncv; avoid PyPI's bundled Qt libraries.
 pyqt6 = "*"
 numpy = "2.*"
