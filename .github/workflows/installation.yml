@@ -35,6 +35,12 @@ jobs:
       NCV_OPENGL: "0"
 
     steps:
+      # Check out the same LF files as the ZIP that participants download and
+      # the update task installs (Windows runners convert to CRLF by default).
+      - name: Keep LF line endings (Windows)
+        if: runner.os == 'Windows'
+        run: git config --global core.autocrlf false
+
       - uses: actions/checkout@v6
         with:
           persist-credentials: false
